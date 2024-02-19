@@ -13,6 +13,7 @@ class CustomerRepo():
         customer_obj.address = customer.address
         
         db.session.commit()
+        return customer_obj
         
     def search_customer(self, name):
         customers = Customer.query.filter(Customer.name.like(f"%{name}%")).all()

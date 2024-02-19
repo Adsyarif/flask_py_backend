@@ -8,9 +8,9 @@ class CustomerService:
         customers = self.customer_repo.get_list_customer()
         return [customer.as_dict() for customer in customers ]
     
-    def update_customer(self, customer_id, customer_data):
-        updated_customer = self.customer_repo.update_customer(customer_id, customer_data)  
-        return updated_customer
+    def update_customer(self, customer_id, customer_data_dto):
+        updated_customer = self.customer_repo.update_customer(customer_id, customer_data_dto)  
+        return updated_customer.as_dict()
     
     def search_customers(self, name):
         customers = self.customer_repo.search_customer(name)

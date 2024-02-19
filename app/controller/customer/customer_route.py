@@ -9,7 +9,7 @@ blp = Blueprint("customer_endpoint", __name__)
 @blp.route("/", methods=["POST"])
 def create_customer():
     try:
-        data = request.get_json()
+        data = request.json
         
         new_customer = Customer()
         new_customer.name = data["name"]
@@ -18,10 +18,11 @@ def create_customer():
     
         db.session.add(new_customer)
         db.session.commit()
+        print(new_customer)
         return api_response(201, new_customer, "Created data successfull")
     
-    except Exception:
-        return api_response(404, message="Error")
+    except Exception as e:
+        return api_response(500, message=str(e))
     
     
 @blp.route("/", methods=["GET"])
@@ -51,15 +52,10 @@ def update_customer(customer_id):
         
         update_customer_request = UpdateCustomerRequest(**data)
         print(update_customer_request)
-
-        customer = Customer()
-        customer.phone = update_customer_request.phone
-        customer.name = update_customer_request.name
-        customer.address = update_customer_request.address
         
         
         customer_service = CustomerService()
-        customers = customer_service.update_customer(customer_id, customer)
+        customers = customer_service.update_customer(customer_id, update_customer_request)
         
         return api_response(201,customers, message="updated")
     
